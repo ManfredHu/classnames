@@ -4,15 +4,15 @@ Classnames
 [![Version](http://img.shields.io/npm/v/classnames.svg)](https://www.npmjs.org/package/classnames)
 [![Build Status](https://travis-ci.org/JedWatson/classnames.svg?branch=master)](https://travis-ci.org/JedWatson/classnames)
 
-A simple javascript utility for conditionally joining classNames together.
+一个简单的用来处理有判断状态的classNames的javascript小工具
 
-Install with npm or Bower.
+npm or Bower.
 
 ```sh
 npm install classnames
 ```
 
-Use with node.js, browserify or webpack:
+node.js, browserify or webpack:
 
 ```js
 var classNames = require('classnames');
@@ -31,8 +31,8 @@ There is also a [Changelog](https://github.com/JedWatson/classnames/blob/master/
 
 ## 用法
 
- `classNames` 函数接受任意长度的string或者是object的参数传入
-The argument `'foo'` is short for `{ foo: true }`. If the value of the key is falsy, it won't be included in the output.
+`classNames` 函数接受任意长度的string或object参数传入
+参数 `'foo'` 是作为 `{ foo: true }` 的键，参数如果值为假值，包括 `false/0/null/undefined/''` 等，则不会被作为输出
 
 ```js
 classNames('foo', 'bar'); // => 'foo bar'
@@ -58,18 +58,20 @@ classNames('a', arr); // => 'a b c'
 
 ### Dynamic class names with ES2015
 
-If you're in an environment that supports [computed keys](http://www.ecma-international.org/ecma-262/6.0/#sec-object-initializer) (available in ES2015 and Babel) you can use dynamic class names:
+如果你的项目支持**计算的键** [computed keys](http://www.ecma-international.org/ecma-262/6.0/#sec-object-initializer) (available in ES2015 and Babel) 你可以动态的使用 class names
+
+**ps:通常键/值对的键是不能动态变化的，React老版本会出错**
 
 ```js
 let buttonType = 'primary';
 classNames({ [`btn-${buttonType}`]: true });
 ```
 
-### Usage with React.js
+### 在 React.js 中的使用
 
-This package is the official replacement for `classSet`, which was originally shipped in the React.js Addons bundle.
+这个东东是官方御用的替代 `classSet` 的东西，`classSet` 就是老的 React.js Addons bundle.（不懂得可以忽略这一句，React v0.14还能找到这货）
 
-One of its primary use cases is to make dynamic and conditional className props simpler to work with (especially more so than conditional string manipulation). So where you may have the following code to generate a `className` prop for a `<button>` in React:
+一个简单的例子，在React中要通过状态判断className的时候，你会用的是字符串拼接的方法，这样不优雅-_-!!
 
 ```js
 var Button = React.createClass({
@@ -83,7 +85,7 @@ var Button = React.createClass({
 });
 ```
 
-You can express the conditional classes more simply as an object:
+你可以用classnames来让代码可读性更高点，也不用老是if/else地判断
 
 ```js
 var classNames = require('classnames');
@@ -101,7 +103,7 @@ var Button = React.createClass({
 });
 ```
 
-Because you can mix together object, array and string arguments, supporting optional className props is also simpler as only truthy arguments get included in the result:
+因为你可以合并对象的属性（包括数组，字符串参数）到一起输出，则值为真的键会被加入到输出结果上：
 
 ```js
 var btnClass = classNames('btn', this.props.className, {
@@ -110,12 +112,9 @@ var btnClass = classNames('btn', this.props.className, {
 });
 ```
 
+### `dedupe` 版本
 
-### Alternate `dedupe` version
-
-There is an alternate version of `classNames` available which correctly dedupes classes and ensures that falsy classes specified in later arguments are excluded from the result set.
-
-This version is slower (about 5x) so it is offered as an opt-in.
+这个版本的可以正确处理重复迭代属性以及属性覆盖的特别的情况，当然因为有迭代和判断的原因会与上面的版本存在性能上的区别，通常是5倍差异。这个版本的慢点。
 
 To use the dedupe version with node, browserify or webpack:
 
@@ -129,11 +128,11 @@ classNames('foo', { foo: false, bar: true }); // => 'bar'
 For standalone (global / AMD) use, include `dedupe.js` in a `<script>` tag on your page.
 
 
-### Alternate `bind` version (for [css-modules](https://github.com/css-modules/css-modules))
+### `bind` 版本 (for [css-modules](https://github.com/css-modules/css-modules))
 
-If you are using [css-modules](https://github.com/css-modules/css-modules), or a similar approach to abstract class "names" and the real `className` values that are actually output to the DOM, you may want to use the `bind` variant.
+如果您使用[css-modules](https://github.com/css-modules/css-modules),或类似的方法,抽象类“名称”和真正的className DOM实际输出值,您可能需要使用绑定变量。
 
-_Note that in ES2015 environments, it may be better to use the "dynamic class names" approach documented above._
+_注意,在ES2015环境中,它可能是更好的使用上面的“动态类名”的方法记录。_
 
 ```js
 var classNames = require('classnames/bind');
