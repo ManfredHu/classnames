@@ -19,9 +19,9 @@ var classNames = require('classnames');
 classNames('foo', 'bar'); // => 'foo bar'
 ```
 
-Alternatively, you can simply include `index.js` on your page with a standalone `<script>` tag and it will export a global `classNames` method, or define the module if you are using RequireJS.
+可以把 `index.js` 问价加到页面的 `<script>` 标签，它会暴露一个全局的 `classNames` 方法, 或者是定义一个 `classNames`模块
 
-### Project philosophy
+### 项目理念
 
 We take the stability and performance of this package seriously, because it is run millions of times a day in browsers all around the world. Updates are thoroughly reviewed for performance impacts before being released, and we have a comprehensive test suite.
 
@@ -29,9 +29,9 @@ Classnames follows the [SemVer](http://semver.org/) standard for versioning.
 
 There is also a [Changelog](https://github.com/JedWatson/classnames/blob/master/HISTORY.md).
 
-## Usage
+## 用法
 
-The `classNames` function takes any number of arguments which can be a string or object.
+ `classNames` 函数接受任意长度的string或者是object的参数传入
 The argument `'foo'` is short for `{ foo: true }`. If the value of the key is falsy, it won't be included in the output.
 
 ```js
