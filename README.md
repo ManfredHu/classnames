@@ -21,7 +21,7 @@ classNames('foo', 'bar'); // => 'foo bar'
 
 可以把 `index.js` 问价加到页面的 `<script>` 标签，它会暴露一个全局的 `classNames` 方法, 或者是定义一个 `classNames`模块
 
-### 不同的地方
+### 不同的地方(Difference)
 这个是修改后的版本，用在手Q和微信的时候发现安卓WebView不识别ES6的动态key的语法
 
 ```javascript
