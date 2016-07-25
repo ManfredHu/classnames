@@ -21,6 +21,67 @@ classNames('foo', 'bar'); // => 'foo bar'
 
 可以把 `index.js` 问价加到页面的 `<script>` 标签，它会暴露一个全局的 `classNames` 方法, 或者是定义一个 `classNames`模块
 
+### 不同的地方
+这个是修改后的版本，用在手Q和微信的时候发现安卓WebView不识别ES6的动态key的语法
+
+```javascript
+render: function() {
+            var userChartText = this.props.userChartText;
+            var list = userChartText.map(function(item,index){
+                var textCss = cl({
+                    'usercenter-chat-label':true,
+                    ['usercenter-chat-label__'+(index+1)]:true //error!!
+                });
+                return (
+                    <li className={textCss} key={index}>{item}</li>
+                )
+            },this);
+
+            return (
+                <div className="usercenter-chat">
+                    <canvas className="usercenter-chat-canvas" id="myChart" width="130" height="130"></canvas>
+                    <ul>
+                        {list}
+                    </ul>
+                    <a href="javascript:;" className="usercenter-chat-q" data-pe="tap:center.showMask">
+                        <i className="icon-game icon-game-question"></i>
+                    </a>
+                </div>
+
+            )
+        }
+```
+
+so,we change the classnames module and add three arguments——@1,@2,@3
+
+```javascript
+render: function() {
+            var userChartText = this.props.userChartText;
+            var list = userChartText.map(function(item,index){
+                var textCss = cl({
+                    'usercenter-chat-label':true,
+                    'usercenter-chat-label__@1':true, //like a function,but it can work perfectly!!
+                    '@1': index+1 //like pass a argument.
+                });
+                return (
+                    <li className={textCss} key={index}>{item}</li>
+                )
+            },this);
+
+            return (
+                <div className="usercenter-chat">
+                    <canvas className="usercenter-chat-canvas" id="myChart" width="130" height="130"></canvas>
+                    <ul>
+                        {list}
+                    </ul>
+                    <a href="javascript:;" className="usercenter-chat-q" data-pe="tap:center.showMask">
+                        <i className="icon-game icon-game-question"></i>
+                    </a>
+                </div>
+
+            )
+        }
+```
 ### 项目理念
 
 We take the stability and performance of this package seriously, because it is run millions of times a day in browsers all around the world. Updates are thoroughly reviewed for performance impacts before being released, and we have a comprehensive test suite.
